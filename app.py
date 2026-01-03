@@ -6,7 +6,7 @@ from datetime import datetime, date, timedelta
 import os
 from functools import wraps
 
-app = Flask(__name__, template_folder='templates', static_folder='static')
+app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your-secret-key-change-in-production'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///hrms.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -104,10 +104,17 @@ def signup():
         password = request.form.get('password')
         confirm_password = request.form.get('confirm_password')
         role = request.form.get('role')
+        first_name = request.form.get('first_name')
+        last_name = request.form.get('last_name')
+        phone = request.form.get('phone')
+        address = request.form.get('address')
+        department = request.form.get('department')
+        position = request.form.get('position')
+        hire_date_str = request.form.get('hire_date')
         
         # Validation
-        if not all([employee_id, email, password, role]):
-            flash('All fields are required.', 'danger')
+        if not all([employee_id, email, password, role, first_name, last_name, department, position, hire_date_str]):
+            flash('All required fields must be filled.', 'danger')
             return render_template('signup.html')
         
         if password != confirm_password:
@@ -127,14 +134,37 @@ def signup():
             flash('Email already registered.', 'danger')
             return render_template('signup.html')
         
+        # Parse hire date
+        try:
+            hire_date = datetime.strptime(hire_date_str, '%Y-%m-%d').date()
+        except ValueError:
+            flash('Invalid hire date format.', 'danger')
+            return render_template('signup.html')
+        
         # Create user
         hashed_password = generate_password_hash(password)
         user = User(
             employee_id=employee_id,
             email=email,
             password=hashed_password,
-            role=role
+            role=role,
+            first_name=first_name,
+            last_name=last_name,
+            phone=phone if phone else None,
+            address=address if address else None,
+            department=department,
+            position=position,
+            hire_date=hire_date
         )
+        
+        # Handle profile picture upload
+        if 'profile_picture' in request.files:
+            file = request.files['profile_picture']
+            if file and file.filename:
+                filename = secure_filename(f"{employee_id}_{file.filename}")
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                user.profile_picture = filename
+        
         db.session.add(user)
         db.session.commit()
         

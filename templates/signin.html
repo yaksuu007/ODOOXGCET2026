@@ -7,42 +7,143 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <div class="auth-container">
-        <div class="auth-card">
-            <h1>Welcome Back</h1>
-            <p>Sign in to your Dayflow account</p>
-            
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    {% for category, message in messages %}
-                        <div class="alert alert-{{ category if category != 'message' else 'info' }}">
-                            {{ message }}
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="/" class="logo">Dayflow HRMS</a>
+            <div class="nav-links">
+                <a href="{{ url_for('signin') }}">Sign In</a>
+                <a href="{{ url_for('signup') }}" class="btn btn-outline">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Split Layout Container -->
+    <div class="signin-split-container">
+        <!-- Left Side - Website Details -->
+        <div class="signin-left">
+            <div class="signin-left-content">
+                <div class="signin-logo-animated">
+                    <div class="logo-icon">📊</div>
+                    <h1 class="animated-text">Dayflow HRMS</h1>
+                </div>
+                
+                <h2 class="signin-subtitle">Streamline Your Workforce Management</h2>
+                <p class="signin-description">
+                    The all-in-one solution for managing your employees, attendance, leave requests, and payroll with ease and efficiency.
+                </p>
+
+                <div class="features-list">
+                    <div class="feature-item">
+                        <div class="feature-icon">👥</div>
+                        <div class="feature-content">
+                            <h3>Employee Management</h3>
+                            <p>Comprehensive employee profiles and information management</p>
                         </div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
-
-            <form method="POST" action="{{ url_for('signin') }}">
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">📅</div>
+                        <div class="feature-content">
+                            <h3>Attendance Tracking</h3>
+                            <p>Real-time check-in/check-out with detailed attendance records</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">🏖️</div>
+                        <div class="feature-content">
+                            <h3>Leave Management</h3>
+                            <p>Streamlined leave request and approval workflow</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">💰</div>
+                        <div class="feature-content">
+                            <h3>Payroll System</h3>
+                            <p>Automated salary calculations and payroll processing</p>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required>
+                <div class="signin-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">1000+</div>
+                        <div class="stat-label">Active Users</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">50+</div>
+                        <div class="stat-label">Companies</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">99.9%</div>
+                        <div class="stat-label">Uptime</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side - Login Form -->
+        <div class="signin-right">
+            <div class="signin-form-container">
+                <div class="signin-form-header">
+                    <h1>Welcome Back</h1>
+                    <p>Sign in to continue to your account</p>
+                </div>
+                
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category if category != 'message' else 'info' }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <form method="POST" action="{{ url_for('signin') }}" class="signin-form">
+                    <div class="form-group">
+                        <label for="email">
+                            <span class="label-icon">📧</span>
+                            Email Address
+                        </label>
+                        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">
+                            <span class="label-icon">🔒</span>
+                            Password
+                        </label>
+                        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                    </div>
+
+                    <div class="form-options">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="remember">
+                            <span>Remember me</span>
+                        </label>
+                        <a href="#" class="forgot-password">Forgot password?</a>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary btn-signin">
+                            <span>Sign In</span>
+                            <span class="btn-arrow">→</span>
+                        </button>
+                    </div>
+                </form>
+
+                <div class="signin-divider">
+                    <span>or</span>
                 </div>
 
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">Sign In</button>
+                <div class="signin-footer">
+                    <p>Don't have an account? <a href="{{ url_for('signup') }}" class="signup-link">Sign Up Now</a></p>
                 </div>
-            </form>
-
-            <div class="auth-link">
-                Don't have an account? <a href="{{ url_for('signup') }}">Sign Up</a>
             </div>
         </div>
     </div>
 </body>
 </html>
-

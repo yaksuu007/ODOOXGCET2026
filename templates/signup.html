@@ -7,8 +7,19 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="/" class="logo">Dayflow HRMS</a>
+            <div class="nav-links">
+                <a href="{{ url_for('signin') }}" class="btn btn-outline">Sign In</a>
+                <a href="{{ url_for('signup') }}">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
     <div class="auth-container">
-        <div class="auth-card">
+        <div class="auth-card" style="max-width: 600px;">
             <h1>Create Account</h1>
             <p>Join Dayflow HRMS today</p>
             
@@ -22,39 +33,139 @@
                 {% endif %}
             {% endwith %}
 
-            <form method="POST" action="{{ url_for('signup') }}">
-                <div class="form-group">
-                    <label for="employee_id">Employee ID</label>
-                    <input type="text" id="employee_id" name="employee_id" required>
+            <form method="POST" action="{{ url_for('signup') }}" enctype="multipart/form-data">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="employee_id">
+                            <span class="label-icon">🆔</span>
+                            Employee ID
+                        </label>
+                        <input type="text" id="employee_id" name="employee_id" placeholder="EMP001" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="role">
+                            <span class="label-icon">👤</span>
+                            Role
+                        </label>
+                        <select id="role" name="role" required>
+                            <option value="">Select Role</option>
+                            <option value="Employee">Employee</option>
+                            <option value="HR">HR / Admin</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="first_name">
+                            <span class="label-icon">👨</span>
+                            First Name
+                        </label>
+                        <input type="text" id="first_name" name="first_name" placeholder="John" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="last_name">
+                            <span class="label-icon">👨</span>
+                            Last Name
+                        </label>
+                        <input type="text" id="last_name" name="last_name" placeholder="Doe" required>
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
+                    <label for="email">
+                        <span class="label-icon">📧</span>
+                        Email Address
+                    </label>
+                    <input type="email" id="email" name="email" placeholder="john.doe@company.com" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="phone">
+                            <span class="label-icon">📱</span>
+                            Phone Number
+                        </label>
+                        <input type="tel" id="phone" name="phone" placeholder="+1 234 567 8900">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="hire_date">
+                            <span class="label-icon">📅</span>
+                            Hire Date
+                        </label>
+                        <input type="date" id="hire_date" name="hire_date" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="department">
+                            <span class="label-icon">🏢</span>
+                            Department
+                        </label>
+                        <select id="department" name="department" required>
+                            <option value="">Select Department</option>
+                            <option value="IT">IT</option>
+                            <option value="HR">Human Resources</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Sales">Sales</option>
+                            <option value="Operations">Operations</option>
+                            <option value="Engineering">Engineering</option>
+                            <option value="Design">Design</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="position">
+                            <span class="label-icon">💼</span>
+                            Position
+                        </label>
+                        <input type="text" id="position" name="position" placeholder="Software Engineer" required>
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="role">Role</label>
-                    <select id="role" name="role" required>
-                        <option value="">Select Role</option>
-                        <option value="Employee">Employee</option>
-                        <option value="HR">HR / Admin</option>
-                    </select>
+                    <label for="address">
+                        <span class="label-icon">📍</span>
+                        Address
+                    </label>
+                    <textarea id="address" name="address" rows="2" placeholder="Enter your address"></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required minlength="8">
-                    <small style="color: var(--text-secondary);">Must be at least 8 characters</small>
+                    <label for="profile_picture">
+                        <span class="label-icon">📷</span>
+                        Profile Picture (Optional)
+                    </label>
+                    <input type="file" id="profile_picture" name="profile_picture" accept="image/*">
+                    <small style="color: var(--text-secondary); display: block; margin-top: 0.5rem;">Upload your profile picture (JPG, PNG)</small>
                 </div>
 
-                <div class="form-group">
-                    <label for="confirm_password">Confirm Password</label>
-                    <input type="password" id="confirm_password" name="confirm_password" required>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="password">
+                            <span class="label-icon">🔒</span>
+                            Password
+                        </label>
+                        <input type="password" id="password" name="password" placeholder="Enter password" required minlength="8">
+                        <small style="color: var(--text-secondary);">Must be at least 8 characters</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm_password">
+                            <span class="label-icon">🔒</span>
+                            Confirm Password
+                        </label>
+                        <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm password" required>
+                    </div>
                 </div>
 
                 <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">Sign Up</button>
+                    <button type="submit" class="btn btn-primary">Create Account</button>
                 </div>
             </form>
 
@@ -65,4 +176,3 @@
     </div>
 </body>
 </html>
-
