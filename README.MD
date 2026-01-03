@@ -89,7 +89,6 @@ Dayflow provides:
 ---
 
 ## 🛠️ Tech Stack
-*(Update this based on what you are using)*
 
 - Frontend: React / HTML / CSS / JavaScript
 - Backend: Node.js / Express
@@ -99,15 +98,5 @@ Dayflow provides:
 
 ---
 
-## ⚙️ Installation & Setup
 
-```bash
-# Clone the repository
-git clone https://github.com/your-repo/dayflow-hrms.git
-
-# Install dependencies
-npm install
-
-# Start the server
-npm start
 
