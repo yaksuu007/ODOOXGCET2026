@@ -112,7 +112,7 @@ To provide a centralized platform that:
 
 * **Frontend:** HTML, CSS, JavaScript (React optional)
 * **Backend:** Python (Flask / FastAPI)
-* **Database:** PostgreSQL
+* **Database:** Sqlite
 
 
 ## 🚀 Future Enhancements
