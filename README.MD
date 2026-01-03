@@ -1,7 +1,5 @@
 # 🌟 Dayflow – Human Resource Management System
 
-**Every workday, perfectly aligned.**
-
 Dayflow is a **role-based Human Resource Management System (HRMS)** designed to digitize and simplify core HR operations such as employee management, attendance tracking, leave approvals, and payroll visibility. It is built for **hackathons and real-world scalability** with a focus on usability and security.
 
 
