@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Profile - Dayflow HRMS{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <h1>Employee Profile</h1>
+    <div>
+        <a href="{{ url_for('edit_profile', user_id=user.id if current_user.role == 'HR' and user.id != current_user.id else None) }}" class="btn btn-primary">Edit Profile</a>
+        {% if current_user.role == 'HR' %}
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline">Back to Dashboard</a>
+        {% endif %}
+    </div>
+</div>
+
+<div class="profile-container">
+    <div class="profile-sidebar">
+        <img src="{{ url_for('static', filename='uploads/' + user.profile_picture) if user.profile_picture else url_for('static', filename='uploads/default.png') }}" 
+             alt="Profile Picture" 
+             class="profile-picture"
+             onerror="this.src='https://via.placeholder.com/150'">
+        <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+        <p style="color: var(--text-secondary);">{{ user.position or 'Employee' }}</p>
+        <p style="color: var(--text-secondary);">{{ user.department or 'N/A' }}</p>
+    </div>
+
+    <div class="profile-content">
+        <div class="profile-section">
+            <h3>Personal Information</h3>
+            <div class="profile-field">
+                <label>Employee ID:</label>
+                <span>{{ user.employee_id }}</span>
+            </div>
+            <div class="profile-field">
+                <label>Email:</label>
+                <span>{{ user.email }}</span>
+            </div>
+            <div class="profile-field">
+                <label>Phone:</label>
+                <span>{{ user.phone or 'Not provided' }}</span>
+            </div>
+            <div class="profile-field">
+                <label>Address:</label>
+                <span>{{ user.address or 'Not provided' }}</span>
+            </div>
+        </div>
+
+        <div class="profile-section">
+            <h3>Job Details</h3>
+            <div class="profile-field">
+                <label>Department:</label>
+                <span>{{ user.department or 'Not assigned' }}</span>
+            </div>
+            <div class="profile-field">
+                <label>Position:</label>
+                <span>{{ user.position or 'Not assigned' }}</span>
+            </div>
+            <div class="profile-field">
+                <label>Hire Date:</label>
+                <span>{{ user.hire_date.strftime('%Y-%m-%d') if user.hire_date else 'Not set' }}</span>
+            </div>
+        </div>
+
+        <div class="profile-section">
+            <h3>Salary Information</h3>
+            <div class="profile-field">
+                <label>Salary:</label>
+                <span>${{ "{:,.2f}".format(user.salary) if user.salary else 'Not set' }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

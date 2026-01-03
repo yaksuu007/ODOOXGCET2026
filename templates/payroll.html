@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Payroll - Dayflow HRMS{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <h1>Payroll Management</h1>
+</div>
+
+<div class="table-container">
+    <div class="table-header">
+        <h2>{% if is_admin %}All Employees Payroll{% else %}My Payroll Information{% endif %}</h2>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Employee ID</th>
+                <th>Name</th>
+                <th>Department</th>
+                <th>Position</th>
+                <th>Salary</th>
+                {% if is_admin %}
+                <th>Actions</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% if employees %}
+                {% for employee in employees %}
+                <tr>
+                    <td>{{ employee.employee_id }}</td>
+                    <td>{{ employee.first_name }} {{ employee.last_name }}</td>
+                    <td>{{ employee.department or '-' }}</td>
+                    <td>{{ employee.position or '-' }}</td>
+                    <td>${{ "{:,.2f}".format(employee.salary) if employee.salary else 'Not set' }}</td>
+                    {% if is_admin %}
+                    <td>
+                        <form method="POST" action="{{ url_for('update_payroll', employee_id=employee.id) }}" style="display: inline-block;">
+                            <input type="number" name="salary" step="0.01" value="{{ employee.salary or '' }}" placeholder="Salary" style="padding: 0.5rem; margin-right: 0.5rem; border: 1px solid var(--border-color); border-radius: 0.25rem; width: 150px;">
+                            <button type="submit" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">Update</button>
+                        </form>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="{{ '6' if is_admin else '5' }}" class="text-center">No payroll information available</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+

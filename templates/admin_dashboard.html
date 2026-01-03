@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - Dayflow HRMS{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <h1>Admin Dashboard</h1>
+    <p>Manage employees, attendance, and leave requests</p>
+</div>
+
+<div class="dashboard-cards">
+    <div class="dashboard-card">
+        <div class="dashboard-card-icon">👥</div>
+        <h3>{{ employees|length }}</h3>
+        <p>Total Employees</p>
+    </div>
+
+    <div class="dashboard-card">
+        <div class="dashboard-card-icon">📋</div>
+        <h3>{{ pending_leaves }}</h3>
+        <p>Pending Leave Requests</p>
+    </div>
+
+    <a href="{{ url_for('attendance') }}" class="dashboard-card">
+        <div class="dashboard-card-icon">📅</div>
+        <h3>Attendance</h3>
+        <p>View all attendance records</p>
+    </a>
+
+    <a href="{{ url_for('payroll') }}" class="dashboard-card">
+        <div class="dashboard-card-icon">💰</div>
+        <h3>Payroll</h3>
+        <p>Manage employee salaries</p>
+    </a>
+</div>
+
+<div class="table-container">
+    <div class="table-header">
+        <h2>Employees</h2>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Employee ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Department</th>
+                <th>Position</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if employees %}
+                {% for employee in employees %}
+                <tr>
+                    <td>{{ employee.employee_id }}</td>
+                    <td>{{ employee.first_name }} {{ employee.last_name }}</td>
+                    <td>{{ employee.email }}</td>
+                    <td>{{ employee.department or '-' }}</td>
+                    <td>{{ employee.position or '-' }}</td>
+                    <td>
+                        <a href="{{ url_for('profile', user_id=employee.id) }}" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.875rem;">View</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="6" class="text-center">No employees found</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+
+<div class="table-container">
+    <div class="table-header">
+        <h2>Recent Attendance</h2>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Employee</th>
+                <th>Date</th>
+                <th>Check In</th>
+                <th>Check Out</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if recent_attendance %}
+                {% for record in recent_attendance %}
+                <tr>
+                    <td>{{ record.user.first_name }} {{ record.user.last_name }}</td>
+                    <td>{{ record.date.strftime('%Y-%m-%d') }}</td>
+                    <td>{{ record.check_in.strftime('%H:%M') if record.check_in else '-' }}</td>
+                    <td>{{ record.check_out.strftime('%H:%M') if record.check_out else '-' }}</td>
+                    <td><span class="badge badge-{{ 'success' if record.status == 'Present' else 'warning' if record.status == 'Half-day' else 'danger' }}">{{ record.status }}</span></td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center">No attendance records yet</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+

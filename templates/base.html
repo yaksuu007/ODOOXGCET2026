@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Dayflow HRMS{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    {% if session.user_id %}
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="/" class="logo">Dayflow HRMS</a>
+            <div class="nav-links">
+                {% if session.role == 'HR' %}
+                <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+                <a href="{{ url_for('attendance') }}">Attendance</a>
+                <a href="{{ url_for('leave') }}">Leave Requests</a>
+                <a href="{{ url_for('payroll') }}">Payroll</a>
+                {% else %}
+                <a href="{{ url_for('employee_dashboard') }}">Dashboard</a>
+                <a href="{{ url_for('profile') }}">Profile</a>
+                <a href="{{ url_for('attendance') }}">Attendance</a>
+                <a href="{{ url_for('leave') }}">Leave</a>
+                <a href="{{ url_for('payroll') }}">Payroll</a>
+                {% endif %}
+                <a href="{{ url_for('logout') }}" class="btn btn-outline">Logout</a>
+            </div>
+        </div>
+    </nav>
+    {% endif %}
+
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category if category != 'message' else 'info' }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
+

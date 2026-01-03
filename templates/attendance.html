@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Attendance - Dayflow HRMS{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <h1>Attendance Management</h1>
+</div>
+
+{% if user.role == 'Employee' %}
+<div class="attendance-actions">
+    <form method="POST" action="{{ url_for('checkin') }}" style="display: inline;">
+        <button type="submit" class="btn btn-primary">Check In</button>
+    </form>
+    <form method="POST" action="{{ url_for('checkout') }}" style="display: inline;">
+        <button type="submit" class="btn btn-secondary">Check Out</button>
+    </form>
+</div>
+{% endif %}
+
+<div class="view-toggle">
+    <a href="{{ url_for('attendance', view='daily') }}" class="btn {{ 'btn-primary' if view_type == 'daily' else 'btn-outline' }}">Daily View</a>
+    <a href="{{ url_for('attendance', view='weekly') }}" class="btn {{ 'btn-primary' if view_type == 'weekly' else 'btn-outline' }}">Weekly View</a>
+</div>
+
+<div class="table-container">
+    <div class="table-header">
+        <h2>Attendance Records - {{ 'Weekly' if view_type == 'weekly' else 'Daily' }} View</h2>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                {% if user.role == 'HR' %}
+                <th>Employee</th>
+                {% endif %}
+                <th>Date</th>
+                <th>Check In</th>
+                <th>Check Out</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if attendance_records %}
+                {% for record in attendance_records %}
+                <tr>
+                    {% if user.role == 'HR' %}
+                    <td>{{ record.user.first_name }} {{ record.user.last_name }}</td>
+                    {% endif %}
+                    <td>{{ record.date.strftime('%Y-%m-%d') }}</td>
+                    <td>{{ record.check_in.strftime('%H:%M') if record.check_in else '-' }}</td>
+                    <td>{{ record.check_out.strftime('%H:%M') if record.check_out else '-' }}</td>
+                    <td>
+                        <span class="badge badge-{{ 'success' if record.status == 'Present' else 'warning' if record.status == 'Half-day' else 'danger' if record.status == 'Absent' else 'info' }}">
+                            {{ record.status }}
+                        </span>
+                    </td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="{{ '5' if user.role == 'HR' else '4' }}" class="text-center">No attendance records found</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
